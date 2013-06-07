@@ -37,7 +37,7 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
             CompanyPersonPK primarykey = new CompanyPersonPK();
             primarykey.setCompaniesId(vo.getCompanyPersonPK().getCompaniesId());
             primarykey.setPersonsCedule(vo.getCompanyPersonPK().getPersonsCedule());
-            CompanyPerson companyPerson = (CompanyPerson) find(primarykey).getData();
+            CompanyPerson companyPerson = find(primarykey);
             if(companyPerson!=null){                
                 rob.setSuccess(true);
                 rob.setData(companyPerson);
@@ -58,6 +58,7 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
         try{
             rob = findByCompaniesPersons(vo);
             CompanyPerson companyPerson = (CompanyPerson) rob.getData();
+            rob.setData(null);
             if(companyPerson!= null && vo.getPerson().getPassword().equals(companyPerson.getPerson().getPassword())){                
                 rob.setSuccess(true);
                 rob.setData(companyPerson);
@@ -77,8 +78,8 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
     public ROb registerRelation (Person personVo, Company companyVo, String rolPerson, String passwordCompany, String passwordPerson){
         ROb rob = new ROb();
         try{
-            Person person = (Person) new PersonFacade().find(personVo).getData();
-            Company company = (Company) new CompanyFacade().find(companyVo).getData();
+            Person person = (Person) new PersonFacade().find(personVo.getCedule());
+            Company company = (Company) new CompanyFacade().find(companyVo.getId());
             if(person!=null && company!=null){
                 if(person.getPassword().equals(passwordPerson) && company.getPassword().equals(passwordCompany)){
                     CompanyPerson companyPerson = new CompanyPerson();
@@ -87,6 +88,7 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
                     companyPerson.setRol(rolPerson);
                     rob.setSuccess(true);
                     rob.setData(companyPerson);
+                    return rob;
                 }
             }
             rob.setSuccess(true);
@@ -98,4 +100,26 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
             return rob;
         }     
     }
+    
+    public ROb removeRelation(CompanyPerson vo, String passwordCompany){
+        ROb rob = new ROb();
+        try{
+            rob = findByCompaniesPersons(vo);
+            CompanyPerson companyPerson = (CompanyPerson) rob.getData();             
+            rob.setData(null);
+            if(companyPerson.getCompany().getPassword().equals(passwordCompany)){
+                remove(companyPerson);
+                rob.setSuccess(true);
+                rob.setData(companyPerson);
+                return rob;
+            }
+            rob.setSuccess(false);            
+            rob.setErr_message("Failed transaction!");
+            return rob;
+        }catch(Exception e){
+            rob.setSuccess(false);
+            rob.setErr_message("Failed transaction!");
+            return rob;
+        }
+    }    
 }

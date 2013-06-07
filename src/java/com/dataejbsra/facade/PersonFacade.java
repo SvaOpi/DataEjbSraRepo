@@ -52,7 +52,7 @@ public class PersonFacade extends AbstractFacade<Person> {
     public ROb registerDeath(int cedule, Date death){
         ROb rob = new ROb();
         try{
-            Person person = (Person) find(cedule).getData();
+            Person person = (Person) find(cedule);
             person.setDeath(death);
             edit(person);
             rob.setSuccess(true);
@@ -67,7 +67,7 @@ public class PersonFacade extends AbstractFacade<Person> {
     public ROb registerFristTime(Person vo){
         ROb rob = new ROb();
         try{
-            Person person = (Person) find(vo.getCedule()).getData();
+            Person person = (Person) find(vo.getCedule());
             person.setAddress(vo.getAddress());
             person.setDtype(vo.getDtype());
             person.setMail(vo.getMail());
@@ -97,5 +97,5 @@ public class PersonFacade extends AbstractFacade<Person> {
             return rob;
         }
     }
-
+        
 }

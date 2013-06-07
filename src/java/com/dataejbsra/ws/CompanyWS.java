@@ -26,7 +26,7 @@ public class CompanyWS {
     // "Insert Code > Add Web Service Operation")
 
     @WebMethod(operationName = "find")
-    public ROb find(@WebParam(name = "id") Object id) {
+    public Company find(@WebParam(name = "id") Object id) {
         return ejbRef.find(id);
     }
 

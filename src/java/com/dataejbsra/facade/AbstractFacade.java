@@ -33,21 +33,8 @@ public abstract class AbstractFacade<T> {
         getEntityManager().remove(getEntityManager().merge(entity));
     }
 
-    public ROb find(Object id) {
-        System.out.println("something to looking for.");
-        ROb rob = new ROb();
-        try{
-            rob.setData(getEntityManager().find(entityClass, id));
-            System.out.println("I founded it!.");
-            rob.setSuccess(true);
-            return rob;
-        }catch(Exception e){
-            System.out.println("crab!.");
-            rob.setErr_message("Failed Transaction");
-            rob.setSuccess(false);
-            rob.setData(null);
-            return rob;
-        }
+    public T find(Object id) {
+        return getEntityManager().find(entityClass, id);
     }
 
     public List<T> findAll() {
