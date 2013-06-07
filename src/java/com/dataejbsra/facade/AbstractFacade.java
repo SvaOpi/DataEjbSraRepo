@@ -34,13 +34,15 @@ public abstract class AbstractFacade<T> {
     }
 
     public ROb find(Object id) {
+        System.out.println("something to looking for.");
         ROb rob = new ROb();
         try{
-            T object = getEntityManager().find(entityClass, id);
-            rob.setData(object);
+            rob.setData(getEntityManager().find(entityClass, id));
+            System.out.println("I founded it!.");
             rob.setSuccess(true);
             return rob;
         }catch(Exception e){
+            System.out.println("crab!.");
             rob.setErr_message("Failed Transaction");
             rob.setSuccess(false);
             rob.setData(null);

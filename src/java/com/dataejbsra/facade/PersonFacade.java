@@ -83,5 +83,19 @@ public class PersonFacade extends AbstractFacade<Person> {
             return rob;
         }
     }
+    
+    public ROb findByUserName(String userName){
+        ROb rob = new ROb();
+        try{
+            Person person = (Person) getEntityManager().createNamedQuery("Person.findByUserName").setParameter("userName", userName);
+            rob.setData(person);
+            rob.setSuccess(true);
+            return rob;
+        }catch(Exception e){
+            rob.setSuccess(false);
+            rob.setErr_message("Failed transaction");
+            return rob;
+        }
+    }
 
 }
