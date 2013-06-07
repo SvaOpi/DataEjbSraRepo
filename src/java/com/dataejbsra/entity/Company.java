@@ -41,7 +41,7 @@ public class Company implements Serializable {
     @Column(name = "ID")
     private Long id;
     @Size(max = 255)
-    @Column(name = "NAME")
+    @Column(name = "NAME", unique = true)
     private String name;
     @Size(max = 255)
     @Column(name = "PASSWORD")

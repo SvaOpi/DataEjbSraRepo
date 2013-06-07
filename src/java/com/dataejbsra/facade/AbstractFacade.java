@@ -4,6 +4,7 @@
  */
 package com.dataejbsra.facade;
 
+import com.dataejbsra.vo.ROb;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -20,20 +21,31 @@ public abstract class AbstractFacade<T> {
 
     protected abstract EntityManager getEntityManager();
 
-    public void create(T entity) {
+    protected void create(T entity) {
         getEntityManager().persist(entity);
     }
 
-    public void edit(T entity) {
+    protected void edit(T entity) {
         getEntityManager().merge(entity);
     }
 
-    public void remove(T entity) {
+    protected void remove(T entity) {
         getEntityManager().remove(getEntityManager().merge(entity));
     }
 
-    public T find(Object id) {
-        return getEntityManager().find(entityClass, id);
+    public ROb find(Object id) {
+        ROb rob = new ROb();
+        try{
+            T object = getEntityManager().find(entityClass, id);
+            rob.setData(object);
+            rob.setSuccess(true);
+            return rob;
+        }catch(Exception e){
+            rob.setErr_message("Failed Transaction");
+            rob.setSuccess(false);
+            rob.setData(null);
+            return rob;
+        }
     }
 
     public List<T> findAll() {

@@ -52,15 +52,34 @@ public class PersonFacade extends AbstractFacade<Person> {
     public ROb registerDeath(int cedule, Date death){
         ROb rob = new ROb();
         try{
-            Person person = new Person();
-            person = find(cedule);
+            Person person = (Person) find(cedule).getData();
             person.setDeath(death);
             edit(person);
             rob.setSuccess(true);
             return rob;
         }catch(Exception e){
             rob.setSuccess(false);
-            rob.setErr_message("Fail!");
+            rob.setErr_message("Failed transaction");
+            return rob;
+        }
+    }
+    
+    public ROb registerFristTime(Person vo){
+        ROb rob = new ROb();
+        try{
+            Person person = (Person) find(vo.getCedule()).getData();
+            person.setAddress(vo.getAddress());
+            person.setDtype(vo.getDtype());
+            person.setMail(vo.getMail());
+            person.setName(vo.getName());
+            person.setPassword(vo.getPassword());
+            person.setUserName(vo.getUserName());
+            edit(person);
+            rob.setSuccess(true);
+            return rob;
+        }catch(Exception e){
+            rob.setSuccess(false);
+            rob.setErr_message("Failed transaction");
             return rob;
         }
     }

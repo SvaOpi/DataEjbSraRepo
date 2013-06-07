@@ -67,6 +67,9 @@ public class Person implements Serializable {
     @Column(name = "NAME")
     private String name;
     @Size(max = 255)
+    @Column(name = "USERNAME",unique = true)
+    private String userName;
+    @Size(max = 255)
     @Column(name = "PASSWORD")
     private String password;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
@@ -134,7 +137,15 @@ public class Person implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+    
+    public String getUserName() {
+        return userName;
+    }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    
     public String getPassword() {
         return password;
     }
