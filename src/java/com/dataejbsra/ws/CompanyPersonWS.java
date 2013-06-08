@@ -4,7 +4,9 @@
  */
 package com.dataejbsra.ws;
 
+import com.dataejbsra.entity.Company;
 import com.dataejbsra.entity.CompanyPerson;
+import com.dataejbsra.entity.Person;
 import com.dataejbsra.facade.CompanyPersonFacade;
 import com.dataejbsra.vo.ROb;
 import java.util.List;
@@ -13,6 +15,7 @@ import javax.jws.WebService;
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  *
@@ -20,6 +23,7 @@ import javax.jws.WebParam;
  */
 @WebService(serviceName = "CompanyPersonWS")
 @Stateless()
+@XmlSeeAlso({Person.class, Company.class, CompanyPerson.class})
 public class CompanyPersonWS {
     @EJB
     private CompanyPersonFacade ejbRef;// Add business logic below. (Right-click in editor and choose

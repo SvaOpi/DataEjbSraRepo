@@ -9,6 +9,7 @@ import com.dataejbsra.entity.CompanyPerson;
 import com.dataejbsra.entity.CompanyPersonPK;
 import com.dataejbsra.entity.Person;
 import com.dataejbsra.vo.ROb;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,6 +22,10 @@ import javax.persistence.PersistenceContext;
 public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
     @PersistenceContext(unitName = "DataEjbSraPU")
     private EntityManager em;
+    @EJB
+    private CompanyFacade companyFacade = new CompanyFacade();    
+    @EJB
+    private PersonFacade personFacade = new PersonFacade();
 
     @Override
     protected EntityManager getEntityManager() {
@@ -43,7 +48,7 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
                 rob.setData(companyPerson);
             }else{
                 rob.setSuccess(false);
-                rob.setErr_message("Fail!");
+                rob.setErr_message("Cant find that object");
             }
             return rob;
         }catch(Exception e){
@@ -77,21 +82,23 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
     public ROb registerRelation (Long personCedule, Long companyId, String rolPerson, String passwordCompany){
         ROb rob = new ROb();
         try{
-            Person person = (Person) new PersonFacade().findByCedule(personCedule).getData();
-            Company company = (Company) new CompanyFacade().findById(companyId).getData();
-            System.out.println(person +" \n" + company);
+            Person person = (Person) personFacade.findByCedule(personCedule).getData();
+            Company company = (Company) companyFacade.findById(companyId).getData();
             if(person!=null && company!=null && person.getDeath()==null){
-                System.out.println("bugs bunny");
                 if(company.getPassword().equals(passwordCompany)){
-                    System.out.println("chan chan chaN!");
                     CompanyPerson companyPerson = new CompanyPerson();
+                    CompanyPersonPK pk = new CompanyPersonPK();
+                    pk.setPersonsCedule(personCedule);
+                    pk.setCompaniesId(companyId);
+                    companyPerson.setCompanyPersonPK(pk);
+                    company.getCompanyPersonCollection().add(companyPerson);
                     companyPerson.setCompany(company);
+                    person.getCompanyPersonCollection().add(companyPerson);
                     companyPerson.setPerson(person);
-                    companyPerson.setRol(rolPerson);
+                    companyPerson.setRol(rolPerson);   
                     create(companyPerson);
-                    System.out.println("Created!");
                     rob.setSuccess(true);
-                    rob.setData(companyPerson);
+                    //rob.setData(companyPerson);
                     return rob;
                 }
             }
@@ -110,14 +117,13 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
         ROb rob = new ROb();
         try{
             rob = findByCompaniesPersons(personCedule,companyId);
-            CompanyPerson companyPerson = (CompanyPerson) rob.getData();  
+            CompanyPerson companyPerson = (CompanyPerson) rob.getData(); 
+                rob.setData(null); 
             if(companyPerson != null && companyPerson.getCompany().getPassword().equals(passwordCompany)){
                 remove(companyPerson);
                 rob.setSuccess(true);
-                rob.setData(companyPerson);
                 return rob;
             }           
-            rob.setData(null);
             rob.setSuccess(false);            
             rob.setErr_message("Cant find that Object!");
             return rob;
