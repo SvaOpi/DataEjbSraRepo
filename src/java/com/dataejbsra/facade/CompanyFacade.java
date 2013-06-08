@@ -52,8 +52,13 @@ public class CompanyFacade extends AbstractFacade<Company> {
         ROb rob = new ROb();
         try{
             Company company = find(id);
-            rob.setData(company);
-            rob.setSuccess(true);
+            if(company==null){
+                rob.setErr_message("Cant Find this Object");
+                rob.setSuccess(false);
+            } else {
+                rob.setData(company);
+                rob.setSuccess(true);
+            }
             return rob;
         }catch(Exception e){
             rob.setSuccess(false);

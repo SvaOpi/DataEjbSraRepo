@@ -49,13 +49,18 @@ public class PersonFacade extends AbstractFacade<Person> {
         }
     }
     
-    public ROb registerDeath(Person vo){
+    public ROb registerDeath(Long cedule){
         ROb rob = new ROb();
         try{
-            Person person = (Person) find(vo.getCedule());
-            person.setDeath(new Date());
-            edit(person);
-            rob.setSuccess(true);
+            Person person = (Person) find(cedule);
+            if (person != null){
+                person.setDeath(new Date());
+                edit(person);
+                rob.setSuccess(true);
+                return rob;
+            }
+            rob.setSuccess(false);
+            rob.setErr_message("Cant find Object");
             return rob;
         }catch(Exception e){
             rob.setSuccess(false);

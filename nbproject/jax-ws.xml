@@ -4,6 +4,12 @@
     <service name="CompanyWS">
       <implementation-class>com.dataejbsra.ws.CompanyWS</implementation-class>
     </service>
+    <service name="PersonWS">
+      <implementation-class>com.dataejbsra.ws.PersonWS</implementation-class>
+    </service>
+    <service name="CompanPersonWS">
+      <implementation-class>com.dataejbsra.ws.CompanPersonWS</implementation-class>
+    </service>
   </services>
   <clients/>
 </jax-ws>
