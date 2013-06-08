@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jax-ws xmlns="http://www.netbeans.org/ns/jax-ws/1">
   <services>
-    <service name="CompanyWS">
-      <implementation-class>com.dataejbsra.ws.CompanyWS</implementation-class>
-    </service>
     <service name="PersonWS">
       <implementation-class>com.dataejbsra.ws.PersonWS</implementation-class>
     </service>
-    <service name="CompanPersonWS">
-      <implementation-class>com.dataejbsra.ws.CompanPersonWS</implementation-class>
+    <service name="CompanyWS">
+      <implementation-class>com.dataejbsra.ws.CompanyWS</implementation-class>
+    </service>
+    <service name="CompanyPersonWS">
+      <implementation-class>com.dataejbsra.ws.CompanyPersonWS</implementation-class>
     </service>
   </services>
   <clients/>

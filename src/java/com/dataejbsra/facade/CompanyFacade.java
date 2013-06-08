@@ -70,9 +70,13 @@ public class CompanyFacade extends AbstractFacade<Company> {
     public ROb removeById(Long id){
         ROb rob = new ROb();
         try{
-            Company company = find(id);
-            remove(company);
-            rob.setSuccess(true);
+            rob = findById(id);
+            if(rob.isSuccess()==true){
+                Company company = (Company) rob.getData();
+                remove(company);
+                rob.setSuccess(true);
+                rob.setData(null);
+            }            
             return rob;
         }catch(Exception e){
             rob.setSuccess(false);

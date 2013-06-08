@@ -57,10 +57,10 @@ public class PersonFacade extends AbstractFacade<Person> {
                 person.setDeath(new Date());
                 edit(person);
                 rob.setSuccess(true);
-                return rob;
+            }else{
+                rob.setSuccess(false);
+                rob.setErr_message("Cant find Object");                
             }
-            rob.setSuccess(false);
-            rob.setErr_message("Cant find Object");
             return rob;
         }catch(Exception e){
             rob.setSuccess(false);
@@ -73,13 +73,18 @@ public class PersonFacade extends AbstractFacade<Person> {
         ROb rob = new ROb();
         try{
             Person person = (Person) find(vo.getCedule());
-            person.setAddress(vo.getAddress());
-            person.setDtype(vo.getDtype());
-            person.setMail(vo.getMail());
-            person.setPassword(vo.getPassword());
-            person.setUserName(vo.getUserName());
-            edit(person);
-            rob.setSuccess(true);
+            if (person!= null){
+                person.setAddress(vo.getAddress());
+                person.setDtype(vo.getDtype());
+                person.setMail(vo.getMail());
+                person.setPassword(vo.getPassword());
+                person.setUserName(vo.getUserName());
+                edit(person);
+                rob.setSuccess(true);
+            }else{                
+                rob.setSuccess(false);
+                rob.setErr_message("Cant find that object");
+            }
             return rob;
         }catch(Exception e){
             rob.setSuccess(false);
@@ -99,7 +104,7 @@ public class PersonFacade extends AbstractFacade<Person> {
                     return rob;
                 }
             }
-            rob.setErr_message("Failed transaction");
+            rob.setErr_message("Cant find that object");
             rob.setSuccess(false);
             return rob;
         }catch(Exception e){
@@ -113,8 +118,13 @@ public class PersonFacade extends AbstractFacade<Person> {
         ROb rob = new ROb();
         try{
             Person person = find(cedule);
-            rob.setData(person);
-            rob.setSuccess(true);
+            if(person !=null){
+                rob.setData(person);
+                rob.setSuccess(true);
+            }else{
+                rob.setSuccess(false);
+                rob.setErr_message("Cant find that object");
+            }
             return rob;
         }catch(Exception e){
             rob.setSuccess(false);

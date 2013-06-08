@@ -16,11 +16,11 @@ import javax.jws.WebParam;
 
 /**
  *
- * @author kmilo_000
+ * @author Usuario1
  */
-@WebService(serviceName = "CompanPersonWS")
+@WebService(serviceName = "CompanyPersonWS")
 @Stateless()
-public class CompanPersonWS {
+public class CompanyPersonWS {
     @EJB
     private CompanyPersonFacade ejbRef;// Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Web Service Operation")

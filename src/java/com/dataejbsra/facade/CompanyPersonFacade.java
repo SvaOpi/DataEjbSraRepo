@@ -62,15 +62,14 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
             if(companyPerson!= null && personPassword.equals(companyPerson.getPerson().getPassword())){                
                 rob.setSuccess(true);
                 rob.setData(companyPerson);
-                return rob;
             }else{
                 rob.setSuccess(false);
-                rob.setErr_message("Fail!");
-                return rob;
+                rob.setErr_message("Cant find that object!");
             }
+            return rob;
         }catch(Exception e){
             rob.setSuccess(false);
-            rob.setErr_message("Fail!");
+            rob.setErr_message("Failed transaction!");
             return rob;
         }     
     }
@@ -78,26 +77,31 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
     public ROb registerRelation (Long personCedule, Long companyId, String rolPerson, String passwordCompany){
         ROb rob = new ROb();
         try{
-            Person person = (Person) new PersonFacade().find(personCedule);
-            Company company = (Company) new CompanyFacade().find(companyId);
-            if(person!=null && company!=null){
+            Person person = (Person) new PersonFacade().findByCedule(personCedule).getData();
+            Company company = (Company) new CompanyFacade().findById(companyId).getData();
+            System.out.println(person +" \n" + company);
+            if(person!=null && company!=null && person.getDeath()==null){
+                System.out.println("bugs bunny");
                 if(company.getPassword().equals(passwordCompany)){
+                    System.out.println("chan chan chaN!");
                     CompanyPerson companyPerson = new CompanyPerson();
                     companyPerson.setCompany(company);
                     companyPerson.setPerson(person);
                     companyPerson.setRol(rolPerson);
                     create(companyPerson);
+                    System.out.println("Created!");
                     rob.setSuccess(true);
                     rob.setData(companyPerson);
                     return rob;
                 }
             }
             rob.setSuccess(false);
-            rob.setErr_message("Fail!");
+            rob.setErr_message("Cant find that Object!");
             return rob;
         }catch(Exception e){
+            e.printStackTrace();
             rob.setSuccess(false);
-            rob.setErr_message("Fail!");
+            rob.setErr_message("Failed transaction!");
             return rob;
         }     
     }
@@ -107,7 +111,7 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
         try{
             rob = findByCompaniesPersons(personCedule,companyId);
             CompanyPerson companyPerson = (CompanyPerson) rob.getData();  
-            if(companyPerson.getCompany().getPassword().equals(passwordCompany)){
+            if(companyPerson != null && companyPerson.getCompany().getPassword().equals(passwordCompany)){
                 remove(companyPerson);
                 rob.setSuccess(true);
                 rob.setData(companyPerson);
@@ -115,7 +119,7 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
             }           
             rob.setData(null);
             rob.setSuccess(false);            
-            rob.setErr_message("Failed transaction!");
+            rob.setErr_message("Cant find that Object!");
             return rob;
         }catch(Exception e){
             rob.setSuccess(false);
