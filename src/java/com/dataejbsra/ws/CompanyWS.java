@@ -25,11 +25,6 @@ public class CompanyWS {
     private CompanyFacade ejbRef;// Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Web Service Operation")
 
-    @WebMethod(operationName = "find")
-    public Company find(@WebParam(name = "id") Object id) {
-        return ejbRef.find(id);
-    }
-
     @WebMethod(operationName = "findAll")
     public List<Company> findAll() {
         return ejbRef.findAll();
@@ -48,6 +43,16 @@ public class CompanyWS {
     @WebMethod(operationName = "registerCompany")
     public ROb registerCompany(@WebParam(name = "name") String name, @WebParam(name = "password") String password) {
         return ejbRef.registerCompany(name, password);
+    }
+
+    @WebMethod(operationName = "findById")
+    public ROb findById(@WebParam(name = "id") Long id) {
+        return ejbRef.findById(id);
+    }
+
+    @WebMethod(operationName = "removeById")
+    public ROb removeById(@WebParam(name = "id") Long id) {
+        return ejbRef.removeById(id);
     }
     
 }

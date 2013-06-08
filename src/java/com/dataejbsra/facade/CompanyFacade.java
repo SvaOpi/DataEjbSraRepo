@@ -48,4 +48,31 @@ public class CompanyFacade extends AbstractFacade<Company> {
         }
     }
     
+    public ROb findById(Long id){
+        ROb rob = new ROb();
+        try{
+            Company company = find(id);
+            rob.setData(company);
+            rob.setSuccess(true);
+            return rob;
+        }catch(Exception e){
+            rob.setSuccess(false);
+            rob.setErr_message("Failed transaction");
+            return rob;
+        }
+    }
+    
+    public ROb removeById(Long id){
+        ROb rob = new ROb();
+        try{
+            Company company = find(id);
+            remove(company);
+            rob.setSuccess(true);
+            return rob;
+        }catch(Exception e){
+            rob.setSuccess(false);
+            rob.setErr_message("Failed transaction");
+            return rob;
+        }
+    }
 }

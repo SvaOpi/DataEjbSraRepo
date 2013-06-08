@@ -4,7 +4,6 @@
  */
 package com.dataejbsra.facade;
 
-import com.dataejbsra.vo.ROb;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -33,8 +32,8 @@ public abstract class AbstractFacade<T> {
         getEntityManager().remove(getEntityManager().merge(entity));
     }
 
-    public T find(Object id) {
-        return getEntityManager().find(entityClass, id);
+    protected T find(Object id) {
+        return (T) getEntityManager().find(entityClass, id);
     }
 
     public List<T> findAll() {

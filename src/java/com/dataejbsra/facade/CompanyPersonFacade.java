@@ -31,12 +31,12 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
         super(CompanyPerson.class);
     }
     
-    public ROb findByCompaniesPersons(CompanyPerson vo){
+    public ROb findByCompaniesPersons(Long personCedule, Long companyId){
         ROb rob = new ROb();
         try{
             CompanyPersonPK primarykey = new CompanyPersonPK();
-            primarykey.setCompaniesId(vo.getCompanyPersonPK().getCompaniesId());
-            primarykey.setPersonsCedule(vo.getCompanyPersonPK().getPersonsCedule());
+            primarykey.setCompaniesId(companyId);
+            primarykey.setPersonsCedule(personCedule);
             CompanyPerson companyPerson = find(primarykey);
             if(companyPerson!=null){                
                 rob.setSuccess(true);
@@ -53,13 +53,13 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
         }    
     }
     
-    public ROb validatePerson (CompanyPerson vo){
+    public ROb validateRelation (Long personCedule, Long companyId, String personPassword){
         ROb rob = new ROb();
         try{
-            rob = findByCompaniesPersons(vo);
+            rob = findByCompaniesPersons(personCedule,companyId);
             CompanyPerson companyPerson = (CompanyPerson) rob.getData();
             rob.setData(null);
-            if(companyPerson!= null && vo.getPerson().getPassword().equals(companyPerson.getPerson().getPassword())){                
+            if(companyPerson!= null && personPassword.equals(companyPerson.getPerson().getPassword())){                
                 rob.setSuccess(true);
                 rob.setData(companyPerson);
                 return rob;
@@ -75,23 +75,24 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
         }     
     }
     
-    public ROb registerRelation (Person personVo, Company companyVo, String rolPerson, String passwordCompany, String passwordPerson){
+    public ROb registerRelation (Long personCedule, Long companyId, String rolPerson, String passwordCompany){
         ROb rob = new ROb();
         try{
-            Person person = (Person) new PersonFacade().find(personVo.getCedule());
-            Company company = (Company) new CompanyFacade().find(companyVo.getId());
+            Person person = (Person) new PersonFacade().find(personCedule);
+            Company company = (Company) new CompanyFacade().find(companyId);
             if(person!=null && company!=null){
-                if(person.getPassword().equals(passwordPerson) && company.getPassword().equals(passwordCompany)){
+                if(company.getPassword().equals(passwordCompany)){
                     CompanyPerson companyPerson = new CompanyPerson();
-                    companyPerson.setCompany(companyVo);
-                    companyPerson.setPerson(personVo);
+                    companyPerson.setCompany(company);
+                    companyPerson.setPerson(person);
                     companyPerson.setRol(rolPerson);
+                    create(companyPerson);
                     rob.setSuccess(true);
                     rob.setData(companyPerson);
                     return rob;
                 }
             }
-            rob.setSuccess(true);
+            rob.setSuccess(false);
             rob.setErr_message("Fail!");
             return rob;
         }catch(Exception e){
@@ -101,18 +102,18 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
         }     
     }
     
-    public ROb removeRelation(CompanyPerson vo, String passwordCompany){
+    public ROb removeRelation(Long personCedule, Long companyId, String passwordCompany){
         ROb rob = new ROb();
         try{
-            rob = findByCompaniesPersons(vo);
-            CompanyPerson companyPerson = (CompanyPerson) rob.getData();             
-            rob.setData(null);
+            rob = findByCompaniesPersons(personCedule,companyId);
+            CompanyPerson companyPerson = (CompanyPerson) rob.getData();  
             if(companyPerson.getCompany().getPassword().equals(passwordCompany)){
                 remove(companyPerson);
                 rob.setSuccess(true);
                 rob.setData(companyPerson);
                 return rob;
-            }
+            }           
+            rob.setData(null);
             rob.setSuccess(false);            
             rob.setErr_message("Failed transaction!");
             return rob;

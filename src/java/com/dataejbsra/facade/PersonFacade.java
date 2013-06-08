@@ -49,11 +49,11 @@ public class PersonFacade extends AbstractFacade<Person> {
         }
     }
     
-    public ROb registerDeath(int cedule, Date death){
+    public ROb registerDeath(Person vo){
         ROb rob = new ROb();
         try{
-            Person person = (Person) find(cedule);
-            person.setDeath(death);
+            Person person = (Person) find(vo.getCedule());
+            person.setDeath(new Date());
             edit(person);
             rob.setSuccess(true);
             return rob;
@@ -64,14 +64,13 @@ public class PersonFacade extends AbstractFacade<Person> {
         }
     }
     
-    public ROb registerFristTime(Person vo){
+    public ROb registerData(Person vo){
         ROb rob = new ROb();
         try{
             Person person = (Person) find(vo.getCedule());
             person.setAddress(vo.getAddress());
             person.setDtype(vo.getDtype());
             person.setMail(vo.getMail());
-            person.setName(vo.getName());
             person.setPassword(vo.getPassword());
             person.setUserName(vo.getUserName());
             edit(person);
@@ -87,7 +86,28 @@ public class PersonFacade extends AbstractFacade<Person> {
     public ROb findByUserName(String userName){
         ROb rob = new ROb();
         try{
-            Person person = (Person) getEntityManager().createNamedQuery("Person.findByUserName").setParameter("userName", userName);
+            List<Person> listPerson = findAll();
+            for(Person person:listPerson){
+                if(person.getUserName().equals(userName)){
+                    rob.setData(person);
+                    rob.setSuccess(true);
+                    return rob;
+                }
+            }
+            rob.setErr_message("Failed transaction");
+            rob.setSuccess(false);
+            return rob;
+        }catch(Exception e){
+            rob.setSuccess(false);
+            rob.setErr_message("Failed transaction");
+            return rob;
+        }
+    }
+    
+    public ROb findByCedule(Long cedule){
+        ROb rob = new ROb();
+        try{
+            Person person = find(cedule);
             rob.setData(person);
             rob.setSuccess(true);
             return rob;
@@ -96,6 +116,5 @@ public class PersonFacade extends AbstractFacade<Person> {
             rob.setErr_message("Failed transaction");
             return rob;
         }
-    }
-        
+    }        
 }
