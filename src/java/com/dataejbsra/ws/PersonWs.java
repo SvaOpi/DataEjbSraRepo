@@ -16,7 +16,7 @@ import javax.jws.WebParam;
 
 /**
  *
- * @author Nicolas
+ * @author Camilo
  */
 @WebService(serviceName = "PersonWs")
 @Stateless()

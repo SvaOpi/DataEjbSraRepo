@@ -59,6 +59,7 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
     }
     
     public ROb<CompanyPerson> validateRelation (Long personCedule, Long companyId, String personPassword){
+        System.out.println("^^^^^^^^^^^^^^Validar relacion: Me han invocado");
         ROb<CompanyPerson> rob = new ROb<CompanyPerson>();
         try{
             rob = findByCompaniesPersons(personCedule,companyId);
@@ -73,6 +74,7 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
             }
             return rob;
         }catch(Exception e){
+            System.out.println("Exception en validar relacion");
             rob.setSuccess(false);
             rob.setErr_message("Failed transaction!");
             return rob;
@@ -80,6 +82,7 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
     }
     
     public ROb<CompanyPerson> registerRelation (Long personCedule, Long companyId, String rolPerson, String passwordCompany){
+        System.out.println("++++++++++++ Registar relacion: Me han invocado");
         ROb<CompanyPerson> rob = new ROb<CompanyPerson>();
         try{
             Person person = (Person) personFacade.findByCedule(personCedule).getData();
@@ -98,7 +101,7 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
                     companyPerson.setRol(rolPerson);   
                     create(companyPerson);
                     rob.setSuccess(true);
-                    //rob.setData(companyPerson);
+                    rob.setData(companyPerson);
                     return rob;
                 }
             }
@@ -106,7 +109,6 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
             rob.setErr_message("Cant find that Object!");
             return rob;
         }catch(Exception e){
-            e.printStackTrace();
             rob.setSuccess(false);
             rob.setErr_message("Failed transaction!");
             return rob;
@@ -114,6 +116,7 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
     }
     
     public ROb<CompanyPerson> removeRelation(Long personCedule, Long companyId, String passwordCompany){
+        System.out.println(" ~~~~~~~~~~~ eliminar relacion: Me han invocado");
         ROb<CompanyPerson> rob = new ROb<CompanyPerson>();
         try{
             rob = findByCompaniesPersons(personCedule,companyId);
@@ -121,6 +124,7 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
             rob.setData(null); 
             if(companyPerson != null && companyPerson.getCompany().getPassword().equals(passwordCompany)){
                 remove(companyPerson);
+                System.out.println("eliminada");
                 rob.setSuccess(true);
                 return rob;
             }           
@@ -128,6 +132,8 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
             rob.setErr_message("Cant find that Object!");
             return rob;
         }catch(Exception e){
+            System.out.println("Exception en eliminar relacion");
+            e.printStackTrace();            
             rob.setSuccess(false);
             rob.setErr_message("Failed transaction!");
             return rob;

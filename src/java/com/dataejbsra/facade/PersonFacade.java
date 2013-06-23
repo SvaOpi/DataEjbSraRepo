@@ -94,11 +94,13 @@ public class PersonFacade extends AbstractFacade<Person> {
     }
     
     public ROb<Person> findByUserName(String userName){
+        System.out.println("me na invocado!! user: "+userName);
         ROb<Person> rob = new ROb<Person>();
         try{
             List<Person> listPerson = findAll();
             for(Person person:listPerson){
                 if(person.getUserName().equals(userName)){
+                    System.out.println("encontrado!!!");
                     rob.setData(person);
                     rob.setSuccess(true);
                     return rob;
