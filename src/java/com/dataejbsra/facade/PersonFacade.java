@@ -30,8 +30,8 @@ public class PersonFacade extends AbstractFacade<Person> {
         super(Person.class);
     }
     
-    public ROb<Person> registerBirth(String name){
-        ROb<Person> rob = new ROb<Person>();
+    public ROb registerBirth(String name){
+        ROb rob = new ROb();
         try{
             Person person = new Person();
             person.setName(name);
@@ -49,8 +49,8 @@ public class PersonFacade extends AbstractFacade<Person> {
         }
     }
     
-    public ROb<Person> registerDeath(Long cedule){
-        ROb<Person> rob = new ROb<Person>();
+    public ROb registerDeath(Long cedule){
+        ROb rob = new ROb();
         try{
             Person person = (Person) find(cedule);
             if (person != null){
@@ -69,8 +69,8 @@ public class PersonFacade extends AbstractFacade<Person> {
         }
     }
     
-    public ROb<Person> registerData(Person vo){
-        ROb<Person> rob = new ROb();
+    public ROb registerData(Person vo){
+        ROb rob = new ROb();
         try{
             Person person = (Person) find(vo.getCedule());
             if (person!= null){
@@ -93,8 +93,8 @@ public class PersonFacade extends AbstractFacade<Person> {
         }
     }
     
-    public ROb<Person> findByUserName(String userName){
-        ROb<Person> rob = new ROb<Person>();
+    public ROb findByUserName(String userName){
+        ROb rob = new ROb();
         try{
             List<Person> listPerson = findAll();
             for(Person person:listPerson){
@@ -114,8 +114,8 @@ public class PersonFacade extends AbstractFacade<Person> {
         }
     }
     
-    public ROb<Person> findByCedule(Long cedule){
-        ROb<Person> rob = new ROb<Person>();
+    public ROb findByCedule(Long cedule){
+        ROb rob = new ROb();
         try{
             Person person = find(cedule);
             if(person !=null){

@@ -29,8 +29,8 @@ public class CompanyFacade extends AbstractFacade<Company> {
         super(Company.class);
     }
     
-    public ROb<Company> registerCompany(String name, String password){
-        ROb<Company> rob = new ROb<Company>();
+    public ROb registerCompany(String name, String password){
+        ROb rob = new ROb();
         try{
             Company company = new Company();
             company.setName(name);
@@ -48,8 +48,8 @@ public class CompanyFacade extends AbstractFacade<Company> {
         }
     }
     
-    public ROb<Company> findById(Long id){
-        ROb<Company> rob = new ROb<Company>();
+    public ROb findById(Long id){
+        ROb rob = new ROb();
         try{
             Company company = find(id);
             if(company==null){
@@ -67,8 +67,8 @@ public class CompanyFacade extends AbstractFacade<Company> {
         }
     }
     
-    public ROb<Company> removeById(Long id){
-        ROb<Company> rob = new ROb<Company>();
+    public ROb removeById(Long id){
+        ROb rob = new ROb();
         try{
             rob = findById(id);
             if(rob.isSuccess()==true){

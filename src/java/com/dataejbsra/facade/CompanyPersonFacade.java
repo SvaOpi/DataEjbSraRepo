@@ -36,8 +36,8 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
         super(CompanyPerson.class);
     }
     
-    public ROb<CompanyPerson> findByCompaniesPersons(Long personCedule, Long companyId){
-        ROb<CompanyPerson> rob = new ROb<CompanyPerson>();
+    public ROb findByCompaniesPersons(Long personCedule, Long companyId){
+        ROb rob = new ROb();
         try{
             CompanyPersonPK primarykey = new CompanyPersonPK();
             primarykey.setCompaniesId(companyId);
@@ -58,8 +58,8 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
         }    
     }
     
-    public ROb<CompanyPerson> validateRelation (Long personCedule, Long companyId, String personPassword){
-        ROb<CompanyPerson> rob = new ROb<CompanyPerson>();
+    public ROb validateRelation (Long personCedule, Long companyId, String personPassword){
+        ROb rob = new ROb();
         try{
             rob = findByCompaniesPersons(personCedule,companyId);
             CompanyPerson companyPerson = (CompanyPerson) rob.getData();
@@ -79,8 +79,8 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
         }     
     }
     
-    public ROb<CompanyPerson> registerRelation (Long personCedule, Long companyId, String rolPerson, String passwordCompany){
-        ROb<CompanyPerson> rob = new ROb<CompanyPerson>();
+    public ROb registerRelation (Long personCedule, Long companyId, String rolPerson, String passwordCompany){
+        ROb rob = new ROb();
         try{
             Person person = (Person) personFacade.findByCedule(personCedule).getData();
             Company company = (Company) companyFacade.findById(companyId).getData();
@@ -113,12 +113,12 @@ public class CompanyPersonFacade extends AbstractFacade<CompanyPerson> {
         }     
     }
     
-    public ROb<CompanyPerson> removeRelation(Long personCedule, Long companyId, String passwordCompany){
-        ROb<CompanyPerson> rob = new ROb<CompanyPerson>();
+    public ROb removeRelation(Long personCedule, Long companyId, String passwordCompany){
+        ROb rob = new ROb();
         try{
             rob = findByCompaniesPersons(personCedule,companyId);
             CompanyPerson companyPerson = (CompanyPerson) rob.getData(); 
-            rob.setData(null); 
+                rob.setData(null); 
             if(companyPerson != null && companyPerson.getCompany().getPassword().equals(passwordCompany)){
                 remove(companyPerson);
                 rob.setSuccess(true);
